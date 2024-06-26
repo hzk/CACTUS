@@ -14,6 +14,12 @@ target_link_libraries(${CUR_LIB_NAME} SystemC::systemc)
 
 target_include_directories(${CUR_LIB_NAME} PUBLIC ../../lib/)
 
+###hzk add
+target_link_directories(${CUR_LIB_NAME} PUBLIC /simbricks/lib/)
+target_link_libraries(${CUR_LIB_NAME} simbricks)
+target_link_libraries(${CUR_LIB_NAME} lib_simbricks_pcie simbricks)
+target_include_directories(${CUR_LIB_NAME} PUBLIC ../../../simbricks_pcie_dma/)
+###hzk add
 
 #Copy the interface python file
 CONFIGURE_FILE(${SRC_PATH}/../../test_files/log_levels.json ${PROJECT_BINARY_DIR}/bin/log_levels.json COPYONLY)

@@ -38,7 +38,11 @@ add_subdirectory(src/2_analog_digital_if/)
 add_subdirectory(src/3_qubit_sim/)
 add_subdirectory(src/4_qvm/)
 add_subdirectory(src/5_tb/)
-add_subdirectory(src/6_qvm_server/)
+#add_subdirectory(src/6_qvm_server/)
 # add_subdirectory(src/tests)
+#simbrick pcie lib
+add_subdirectory(../simbricks_pcie_dma/ ${CMAKE_BINARY_DIR}/simbricks_pcie_dma)
+#add_subdirectory(/home/user/simbrick/simbricks_pcie_dma ${CMAKE_BINARY_DIR}/simbricks_pcie_dma)
+#add_subdirectory(../simbricks_pcie_dma/)
 
 message(STATUS "Finished adding subdirectories.")

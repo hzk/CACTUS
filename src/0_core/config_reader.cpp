@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "num_util.h"
+#include "common/common.h"
 
 using json = nlohmann::json;
 
@@ -236,7 +237,8 @@ void config_reader::configure_cmdparser() {
 
 void config_reader::run_cmdparser() {
 
-    cmdparser->run_and_exit_if_error();
+	dprintf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~cmdparser->run_and_exit_if_error() skip");
+    //cmdparser->run_and_exit_if_error();
 
     // unsigned int
     num_qubits        = cmdparser->get<unsigned int>("n");
@@ -261,7 +263,6 @@ void config_reader::run_cmdparser() {
         std::string path = abs_dir_path_of_exe();
         log_level_fn     = path + "/log_levels.json";
     }
-
     // create logger
     std::ifstream log_level_fin;
     log_level_fin.open(log_level_fn, std::ios::in);

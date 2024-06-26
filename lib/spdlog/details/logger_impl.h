@@ -9,6 +9,7 @@
 
 #include <memory>
 #include <string>
+#include "common/common.h"
 
 // create logger with given name, sinks and the default pattern formatter
 // all other ctors will call this one
@@ -56,15 +57,20 @@ inline void spdlog::logger::set_pattern(std::string pattern, pattern_time_type t
 template<typename... Args>
 inline void spdlog::logger::log(level::level_enum lvl, const char *fmt, const Args &... args)
 {
+
     if (!should_log(lvl))
     {
-        return;
+        //return;
     }
 
     try
     {
         details::log_msg log_msg(&name_, lvl);
         fmt::format_to(log_msg.raw, fmt, args...);
+		char msg[2048];//temp code
+        fmt::format_to(msg, fmt, args...);
+        dprintf("%s",(char*)msg );
+		//dprintf(fmt,args);
         sink_it_(log_msg);
     }
     SPDLOG_CATCH_AND_HANDLE
@@ -75,12 +81,13 @@ inline void spdlog::logger::log(level::level_enum lvl, const char *msg)
 {
     if (!should_log(lvl))
     {
-        return;
+        //return;
     }
     try
     {
         details::log_msg log_msg(&name_, lvl);
         details::fmt_helper::append_c_str(msg, log_msg.raw);
+		dprintf("%s",(char *)msg);
         sink_it_(log_msg);
     }
     SPDLOG_CATCH_AND_HANDLE
@@ -91,12 +98,13 @@ inline void spdlog::logger::log(level::level_enum lvl, const T &msg)
 {
     if (!should_log(lvl))
     {
-        return;
+        //return;
     }
     try
     {
         details::log_msg log_msg(&name_, lvl);
         fmt::format_to(log_msg.raw, "{}", msg);
+		dprintf("%s",(char *)msg.c_str());
         sink_it_(log_msg);
     }
     SPDLOG_CATCH_AND_HANDLE

@@ -9,7 +9,15 @@ find_package(PythonInterp 3.7 REQUIRED)
 find_package(PythonLibs 3.7 REQUIRED)
 
 add_executable(${CUR_LIB_NAME} quma_tb_base.cpp main.cpp tb_qvm.cpp)
+
 target_link_libraries(${CUR_LIB_NAME} ${PYTHON_LIBRARIES} SystemC::systemc lib_core lib_quantum lib_classical lib_adi lib_quantumsim lib_qvm lib_QIcircuit)
+
+###hzk add
+target_link_directories(${CUR_LIB_NAME} PUBLIC /simbricks/lib/)
+target_link_libraries(${CUR_LIB_NAME} simbricks)
+target_link_libraries(${CUR_LIB_NAME} lib_simbricks_pcie simbricks)
+target_include_directories(${CUR_LIB_NAME} PUBLIC ../../../simbricks_pcie_dma/)
+###hzk add
 
 target_include_directories(${CUR_LIB_NAME} PUBLIC ${PYTHON_INCLUDE_DIRS})
 target_include_directories(${CUR_LIB_NAME} PUBLIC ../../lib/)
@@ -21,3 +29,4 @@ target_include_directories(${CUR_LIB_NAME} PUBLIC ../2_analog_digital_if/)
 target_include_directories(${CUR_LIB_NAME} PUBLIC ../3_qubit_sim/quantumsim/)
 target_include_directories(${CUR_LIB_NAME} PUBLIC ../3_qubit_sim/QIcircuit/)
 target_include_directories(${CUR_LIB_NAME} PUBLIC ../4_qvm/)
+target_include_directories(${CUR_LIB_NAME} PUBLIC ../../../simbricks_pcie_dma/)
