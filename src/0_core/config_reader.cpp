@@ -269,6 +269,7 @@ void config_reader::run_cmdparser() {
     if (log_level_fin) {
         log_level_fin.close();
         read_log_levels(log_level_fn);
+	dprintf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     } else {
         set_log_level_default();
     }
@@ -330,7 +331,8 @@ void config_reader::run_cmdparser() {
 
     if (qisa_bin_fn.empty() && qisa_asm_fn.empty()) {
         logger->error("config_reader: No valid input bin or asm file. Simulation aborts!");
-        exit(EXIT_FAILURE);
+		dprintf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~qisa_bin_fn.empty() && qisa_asm_fn.empty()) skip. simbricks will enter the relevant content.");
+        //exit(EXIT_FAILURE);
     }
 
     delete cmdparser;

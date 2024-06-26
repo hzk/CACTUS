@@ -7,6 +7,9 @@
 #include <systemc>
 
 #include "logger_wrapper.h"
+#include "common/common.h"
+#include "accel-sim/plumbing.h"
+
 
 namespace cactus {
 
@@ -140,6 +143,50 @@ unsigned int Icache_rtl::convert_line_to_ele_instr(std::vector<std::vector<std::
     return 3;
 }
 
+static unsigned int count = 0;
+static unsigned int line_num = 1;
+static Icache_rtl* callObj;
+//void Icache_rtl::read_insn_simbricks(char *_insn){
+void read_insn_simbricks(char *_insn){
+	// remove comments which indicate by first char '#'
+	/*
+	*/
+	//input_insn(_insn);
+	callObj->input_insn(_insn);
+}
+
+void Icache_rtl::input_insn(char *_insn) {
+	dprintf("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!%s",_insn);
+    std::string  insn(_insn);
+    std::string  line_num_str;
+
+	line_num_str = to_string(line_num++);
+	trim_comments(insn);
+
+	// ex: "label: add r1,r2,r3"
+	if (insn.find(":") != insn.npos) {
+		std::vector<std::string> sub_parts;
+		sub_parts = split(insn, ':');
+
+		std::string label = trim(sub_parts[0]);
+		map_label.insert(std::make_pair(label, count));
+
+		std::regex pattern("[0-9a-zA-Z]+");
+		if ((sub_parts.size() == 2) && std::regex_search(sub_parts[1], pattern)) {
+			// cache_mem_asm.push_back(trim(sub_parts[1]));
+			// count++;
+			count += convert_line_to_ele_instr(cache_mem_asm, sub_parts[1], line_num_str);
+		}
+	} else {
+		// ex："add r1,r2,r3"
+		std::regex pattern("[0-9a-zA-Z]+");
+		if (std::regex_search(insn, pattern)) {
+			// cache_mem_asm.push_back(trim(insn));
+			// count++;
+			count += convert_line_to_ele_instr(cache_mem_asm, insn, line_num_str);
+		}
+	}	
+}
 void Icache_rtl::init_mem_asm(std::string qisa_asm_fn) {
     auto logger = get_logger_or_exit("cache_logger");
 
@@ -149,12 +196,59 @@ void Icache_rtl::init_mem_asm(std::string qisa_asm_fn) {
     cache_mem_asm.clear();
 
     std::ifstream qisa_file;
+
+	callObj = this;
+    //qisa_file.open(qisa_asm_fn);
+	//dprintf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    //if (!qisa_file) {
+    //    logger->error("{}: Failed to open file: '{}'. Simulation aborts!", this->name(),
+    //                  qisa_asm_fn);
+    //    exit(EXIT_FAILURE);
+    //}
+	//dprintf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    //logger->debug("{}: Successfully opened the file '{}'.", this->name(), qisa_asm_fn);
+
+    count = 0;
+    line_num = 1;
+
+	dprintf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+	//read_start_for_CACTUS(Icaceh_rtl::read_insn_simbricks);
+	read_start_for_CACTUS(read_insn_simbricks);
+
+    std::vector<std::string> stop_instr;
+    stop_instr.push_back("stop");
+    stop_instr.push_back(to_string(line_num++));
+    stop_instr.push_back("stop");
+    cache_mem_asm.push_back(stop_instr);  // add extra stop instructions at the end
+
+    logger->trace("{}: Successfully read the asm qisa program, which has {} instructions.",
+                  this->name(), count);
+
+    //qisa_file.close();
+}
+/*
+void Icache_rtl::init_mem_asm(std::string qisa_asm_fn) {
+    auto logger = get_logger_or_exit("cache_logger");
+
+    logger->trace("{}: Initializing the ICACHE with the asm file: '{}'.", this->name(),
+                  qisa_asm_fn);
+
+    cache_mem_asm.clear();
+
+    std::ifstream qisa_file;
+
+	dprintf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+	read_start_for_CACTUS(read_insn_simbricks);
+
     qisa_file.open(qisa_asm_fn);
+	dprintf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     if (!qisa_file) {
         logger->error("{}: Failed to open file: '{}'. Simulation aborts!", this->name(),
                       qisa_asm_fn);
+	dprintf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         exit(EXIT_FAILURE);
     }
+	dprintf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     logger->debug("{}: Successfully opened the file '{}'.", this->name(), qisa_asm_fn);
 
     unsigned int count = 0;
@@ -204,7 +298,7 @@ void Icache_rtl::init_mem_asm(std::string qisa_asm_fn) {
 
     qisa_file.close();
 }
-
+*/
 void Icache_rtl::combinational_gen() {
     auto logger = get_logger_or_exit("cache_logger");
 

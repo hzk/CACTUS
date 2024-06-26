@@ -47,6 +47,8 @@ SC_MODULE(Icache_rtl) {
     void register_at_memory_pipeline();
     void no_register_memory_pipeline();
 
+	//void read_insn_simbricks(char *insn);
+	void input_insn(char *_insn);
     void read_insn();
     void memory_out_reg();
     void no_memory_out_reg();

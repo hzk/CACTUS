@@ -13,3 +13,12 @@ target_link_libraries(${CUR_LIB_NAME} SystemC::systemc lib_core)
 
 target_include_directories(${CUR_LIB_NAME} PUBLIC ../../../lib/)
 target_include_directories(${CUR_LIB_NAME} PUBLIC ../../0_core/)
+
+
+###hzk add
+target_link_directories(${CUR_LIB_NAME} PUBLIC /simbricks/lib/)
+target_link_libraries(${CUR_LIB_NAME} simbricks)
+target_link_libraries(${CUR_LIB_NAME} lib_simbricks_pcie simbricks)
+target_include_directories(${CUR_LIB_NAME} PUBLIC ../../../../simbricks_pcie_dma/)
+###hzk add
+
