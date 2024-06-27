@@ -18,7 +18,10 @@ using namespace cactus;
 
 int sc_main(int argc, char* argv[]) {
 
-	main_for_CACTUS(argc,argv);
+	dprintf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%d",argc);
+	if(argc!=3){
+		main_for_CACTUS(argc,argv);
+	}
     // The following command turns off warning about IEEE 1666 deprecated features.
     sc_core::sc_report_handler::set_actions("/IEEE_Std_1666/deprecated", sc_core::SC_DO_NOTHING);
 

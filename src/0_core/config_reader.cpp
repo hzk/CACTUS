@@ -238,7 +238,7 @@ void config_reader::configure_cmdparser() {
 void config_reader::run_cmdparser() {
 
 	dprintf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~cmdparser->run_and_exit_if_error() skip");
-    //cmdparser->run_and_exit_if_error();
+    cmdparser->run_and_exit_if_error();
 
     // unsigned int
     num_qubits        = cmdparser->get<unsigned int>("n");

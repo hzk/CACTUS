@@ -182,9 +182,11 @@ void If_QIcircuit::post_py_process(PyObject* pValue, PyObject* pMethod,
     auto logger = get_logger_or_exit("qsim_logger");
 
     if (pValue != NULL) {
+	dprintf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*************************************************");
         Py_DECREF(pValue);
         Py_XDECREF(pMethod);
     } else {
+	dprintf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*************************************************");
         Py_DECREF(pMethod);
         PyErr_Print();
         logger->error(err_msg);

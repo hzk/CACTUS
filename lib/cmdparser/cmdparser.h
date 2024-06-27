@@ -367,7 +367,8 @@ namespace cli {
 
 		inline void run_and_exit_if_error() {
 			if (run() == false) {
-				exit(1);
+			printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~cmdparser->run_and_exit_if_error() false return skip\n");
+				//exit(1);
 			}
 		}
 

@@ -7,6 +7,7 @@
 #include "global_counter.h"
 #include "logger_wrapper.h"
 #include "num_util.h"
+#include "common/common.h"
 
 namespace cactus {
 
@@ -467,7 +468,8 @@ void If_QuantumSim::apply_idle_gate(unsigned int idle_duration, unsigned int qub
     auto pArgs   = PyLong_FromLong(idle_duration);
     auto pMethod = PyUnicode_FromString("calculate_gamma_lamda");
     auto pValue  = PyObject_CallMethodObjArgs(interface, pMethod, pArgs, NULL);
-    Py_DECREF(pArgs);
+    Py_DECREF(pArgs);	
+	dprintf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*************************************************");
     post_py_process(pValue, pMethod, "Failed to call calculate_gamma_lamda. Aborts.");
 
     // Prepare the idling gate ptm

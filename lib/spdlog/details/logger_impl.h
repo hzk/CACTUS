@@ -67,10 +67,10 @@ inline void spdlog::logger::log(level::level_enum lvl, const char *fmt, const Ar
     {
         details::log_msg log_msg(&name_, lvl);
         fmt::format_to(log_msg.raw, fmt, args...);
-		char msg[2048];//temp code
+		/*char msg[2048];//temp code
 		memset(msg,0,sizeof(msg));
         fmt::format_to(msg, fmt, args...);
-        sprintf("%s",(char*)msg );
+        sprintf("%s",(char*)msg );*/
         sink_it_(log_msg);
     }
     SPDLOG_CATCH_AND_HANDLE
